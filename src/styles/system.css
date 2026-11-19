@@ -493,3 +493,5 @@ select.input { background-position: left 12px center; }
 .g-val{font-size:12px;font-weight:700;margin-bottom:4px}
 .g-lbl{font-size:11px;margin-top:6px;opacity:.7;white-space:nowrap}
 @media(max-width:600px){.growth-sum b{font-size:19px}.g-lbl{font-size:9px}.growth-chart{gap:3px}}
+.back-site{position:absolute;top:24px;inset-inline-start:24px;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border,#dde2ee);border-radius:10px;background:#fff;color:inherit;font-weight:600;font-size:14px;text-decoration:none}
+.back-site:hover{background:var(--surface-2)}

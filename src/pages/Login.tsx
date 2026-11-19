@@ -27,7 +27,8 @@ export default function Login() {
           <li><Icon name="checkCircle" size={18} />كلمات المرور مشفّرة</li>
         </ul>
       </aside>
-      <main className="auth__main">
+      <main className="auth__main" style={{ position: "relative" }}>
+        <a href="https://nexora-showcase.pages.dev/" className="back-site">→ رجوع للموقع</a>
         <form className="auth__card" onSubmit={submit}>
           <h1>تسجيل الدخول</h1>
           <p className="lead">ادخل بحسابك عشان تكمل.</p>
