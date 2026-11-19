@@ -30,7 +30,7 @@ export function YearLines({ rows }: { rows: Customer[] }) {
   const lastYTD = byYear[nowY - 1]?.slice(0, nowM + 1).reduce((a, b) => a + b, 0);
   const yoy = lastYTD ? Math.round(((thisYTD - lastYTD) / lastYTD) * 100) : null;
 
-  const W = 900, H = 300, padT = 24, padB = 40, padX = 44;
+  const W = 900, H = 320, padT = 56, padB = 40, padX = 44;
   const maxV = Math.max(4, ...series.flatMap((s) => s.vals));
   const step = Math.ceil(maxV / 4), top = step * 4;
   const colW = (W - padX * 2) / 12;
@@ -64,10 +64,16 @@ export function YearLines({ rows }: { rows: Customer[] }) {
             <text x={x(i)} y={H - 14} textAnchor="middle" className={`g-month ${hover === i ? 'now' : ''}`}>{m.slice(0, 3)}</text>
           </g>
         ))}
-        {series.map((s) => (
+        {series.map((s, si) => (
           <g key={s.y} pointerEvents="none">
             <path d={s.vals.map((v, i) => `${i ? 'L' : 'M'}${x(i)},${y(v)}`).join(' ')} fill="none" stroke={s.color} strokeWidth={3} strokeLinejoin="round" strokeLinecap="round" />
             {s.vals.map((v, i) => <circle key={i} cx={x(i)} cy={y(v)} r={hover === i ? 6 : 4} fill="#fff" stroke={s.color} strokeWidth={3} />)}
+            {s.vals.map((v, i) => v > 0 && (
+              <g key={'l' + i}>
+                <rect x={x(i) - 36} y={y(v) - 36 - si * 30} width={72} height={24} rx={12} fill={s.color} />
+                <text x={x(i)} y={y(v) - 19 - si * 30} textAnchor="middle" className="g-pt" direction="rtl">{`${v} ${v >= 3 && v <= 10 ? 'عملاء' : 'عميل'}`}</text>
+              </g>
+            ))}
             <text x={x(s.vals.length - 1) + 10} y={y(s.vals[s.vals.length - 1]) + 4} className="g-num" style={{ fill: s.color }}>{s.y}</text>
           </g>
         ))}
