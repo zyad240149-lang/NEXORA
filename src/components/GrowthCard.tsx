@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Customer } from '../types';
+import { YearLines } from './YearLines';
 
 // نمو العملاء شهريًا: أعمدة = عملاء جدد كل شهر، خط = إجمالي العملاء، وسهم مقارنة بالشهر اللي فات.
 const MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
@@ -10,6 +11,7 @@ const keyOf = (d: Date) => {
 
 export function GrowthCard({ rows }: { rows: Customer[] }) {
   const [hover, setHover] = useState<number | null>(null);
+  const [mode, setMode] = useState<'months' | 'years'>('months');
   const counts: Record<string, number> = {};
   rows.forEach((c) => { if (c.created) { const k = keyOf(new Date(c.created)); counts[k] = (counts[k] ?? 0) + 1; } });
 
@@ -59,6 +61,11 @@ export function GrowthCard({ rows }: { rows: Customer[] }) {
         </div>
       </div>
       <div className="card__body">
+        <div className="g-toggle g-mode">
+          <button className={mode === 'months' ? 'on' : ''} onClick={() => setMode('months')}>آخر الشهور</button>
+          <button className={mode === 'years' ? 'on' : ''} onClick={() => setMode('years')}>خط لكل سنة</button>
+        </div>
+        {mode === 'years' ? <YearLines rows={rows} /> : <>
         <div className="growth-sum">
           <div className="gs-main"><span>عملاء جدد في {cur.label}</span><b className="num">{cur.n}</b><em className={up ? 'up' : flat ? '' : 'down'}>{flat ? 'زي الشهر اللي فات' : `${up ? '▲ أكتر' : '▼ أقل'} بـ ${Math.abs(diff)} عن ${prev.label}`}</em></div>
           <div><span>عملاء جدد في {prev.label}</span><b className="num">{prev.n}</b></div>
@@ -91,6 +98,7 @@ export function GrowthCard({ rows }: { rows: Customer[] }) {
           <span>عملاء جدد: <b className="num">{sel.n}</b></span>
           <span>الإجمالي: <b className="num">{sel.total}</b></span>
         </div>
+        </>}
       </div>
     </div>
   );
