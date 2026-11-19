@@ -6,7 +6,7 @@ import { PAY, subState } from '../data/status';
 import { useCustomers } from '../hooks/useCustomers';
 import { useToast } from '../hooks/useToast';
 import type { Customer, Subscription } from '../types';
-import { fmtDate, money } from '../utils/format';
+import { fmtDate, fmtDuration, money } from '../utils/format';
 
 const STATES = [{ value: '', label: 'الكل' }, { value: 'active', label: 'نشط' }, { value: 'soon', label: 'ينتهي قريبًا' }, { value: 'expired', label: 'منتهي' }];
 
@@ -37,7 +37,7 @@ export default function Subscriptions() {
                 <tr key={s.id}>
                   <td style={{ fontWeight: 600 }}>{c.name}</td>
                   <td className="num">{money(s.price, s.cur)}</td>
-                  <td className="num">{s.months} شهر</td>
+                  <td className="num">{fmtDuration(s.months, s.unit)}</td>
                   <td>{fmtDate(s.start)}</td>
                   <td>{fmtDate(s.end)}</td>
                   <td><StatusBadge {...PAY[s.pay]} />{s.payNote && <div className="muted-sm">{s.payNote}</div>}</td>

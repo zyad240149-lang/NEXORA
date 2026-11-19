@@ -51,7 +51,7 @@ export default function CustomerModal({ customer, onClose, onSaved }: { customer
         managerName: f.managerName.trim(), contractManagerName: f.contractManagerName.trim(),
       });
       if (withSub) {
-        await db.saveSub({ customerId: id, price: Number(sub.price), cur: sub.cur, start: new Date(sub.start + 'T00:00:00').toISOString(), months: Number(sub.months), pay: sub.pay, payNote: '', salesId: rid, salesPct: rid ? p : null, commissionPaid: false });
+        await db.saveSub({ customerId: id, price: Number(sub.price), cur: sub.cur, start: new Date(sub.start + 'T00:00:00').toISOString(), months: Number(sub.months), unit: 'm', pay: sub.pay, payNote: '', salesId: rid, salesPct: rid ? p : null, commissionPaid: false });
       }
       toast.success(withSub ? 'تم حفظ المشترك والاشتراك' : 'تم الحفظ'); onSaved();
     } catch (e) { toast.error((e as Error).message); } finally { setBusy(false); }

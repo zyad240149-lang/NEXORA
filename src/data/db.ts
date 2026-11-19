@@ -4,7 +4,7 @@
 // ===============================================================
 import { supabase } from '../lib/supabase';
 import type { Account, Customer, Goal, SalesRep, Subscription } from '../types';
-import { addMonths } from '../utils/format';
+import { addDuration } from '../utils/format';
 
 const KEY = 'nexora_cloud_v1';
 type Local = { customers: Customer[]; goals: Goal[]; accounts?: Account[]; reps?: SalesRep[] };
@@ -29,7 +29,7 @@ function saveLocal(d: Local) { try { localStorage.setItem(KEY, JSON.stringify(d)
 
 const map = {
   customer: (r: any, subs: Subscription[]): Customer => ({ id: r.id, name: r.name, country: r.country, code: r.phone_code, phone: r.phone ?? '', biz: r.business ?? '', url: r.url ?? '', notes: r.notes ?? '', created: r.created_at, salesId: r.sales_rep_id ?? null, salesPct: nn(r.sales_pct), branches: r.branches ?? [], managerName: r.manager_name ?? '', managerPhone: r.manager_phone ?? '', contractManagerName: r.contract_manager_name ?? '', contractManagerPhone: r.contract_manager_phone ?? '', subs }),
-  sub: (r: any): Subscription => ({ id: r.id, customerId: r.customer_id, price: Number(r.price), cur: r.currency, start: r.starts_at, months: r.months, end: r.ends_at, pay: r.pay_status, payNote: r.pay_note ?? '', salesId: r.sales_rep_id ?? null, salesPct: nn(r.sales_pct), commissionPaid: !!r.commission_paid }),
+  sub: (r: any): Subscription => ({ id: r.id, customerId: r.customer_id, price: Number(r.price), cur: r.currency, start: r.starts_at, months: r.months, unit: r.duration_unit ?? 'm', end: r.ends_at, pay: r.pay_status, payNote: r.pay_note ?? '', salesId: r.sales_rep_id ?? null, salesPct: nn(r.sales_pct), commissionPaid: !!r.commission_paid }),
   rep: (r: any): SalesRep => ({ id: r.id, name: r.name, phone: r.phone ?? '', defaultPct: Number(r.default_pct), active: r.active }),
   account: (r: any): Account => ({ id: r.id, service: r.service, email: r.email, projectName: r.project_name ?? '', projectRef: r.project_ref ?? '', url: r.url ?? '', passwordEnc: r.password_enc ?? '', notes: r.notes ?? '', active: r.active, created: r.created_at }),
   goal: (r: any): Goal => ({ id: r.id, name: r.name, desc: r.description ?? '', start: r.starts_at, end: r.ends_at, target: r.target, main: r.is_main }),
@@ -38,7 +38,7 @@ const ok = <T,>({ data, error }: { data: T; error: any }) => { if (error) throw 
 
 export const db = {
   async customers(): Promise<Customer[]> {
-    if (!supabase) return (await local()).customers.map((c) => ({ ...c, branches: c.branches ?? [], managerName: c.managerName ?? '', managerPhone: c.managerPhone ?? '', contractManagerName: c.contractManagerName ?? '', contractManagerPhone: c.contractManagerPhone ?? '', salesId: c.salesId ?? null, salesPct: c.salesPct ?? null, subs: c.subs.map((s) => ({ ...s, salesId: s.salesId ?? null, salesPct: s.salesPct ?? null, commissionPaid: !!s.commissionPaid })) }));
+    if (!supabase) return (await local()).customers.map((c) => ({ ...c, branches: c.branches ?? [], managerName: c.managerName ?? '', managerPhone: c.managerPhone ?? '', contractManagerName: c.contractManagerName ?? '', contractManagerPhone: c.contractManagerPhone ?? '', salesId: c.salesId ?? null, salesPct: c.salesPct ?? null, subs: c.subs.map((s) => ({ ...s, unit: s.unit ?? 'm', salesId: s.salesId ?? null, salesPct: s.salesPct ?? null, commissionPaid: !!s.commissionPaid })) }));
     const [cs, ss] = await Promise.all([supabase.from('customers').select('*').order('created_at'), supabase.from('subscriptions').select('*').order('starts_at')]);
     const subs = (ok(ss) as any[]).map(map.sub);
     return (ok(cs) as any[]).map((r) => map.customer(r, subs.filter((s) => s.customerId === r.id)));
@@ -85,7 +85,7 @@ export const db = {
     ok(await supabase.from('customers').delete().eq('id', id));
   },
   async saveSub(s: Omit<Subscription, 'id' | 'end'> & { id?: string }) {
-    const end = addMonths(s.start, s.months);
+    const end = addDuration(s.start, s.months, s.unit);
     if (!supabase) {
       const d = await local(); const c = d.customers.find((x) => x.id === s.customerId)!;
       const i = c.subs.findIndex((x) => x.id === s.id);
@@ -93,7 +93,7 @@ export const db = {
       if (i >= 0) c.subs[i] = full; else c.subs.push(full);
       return saveLocal(d);
     }
-    const row = { customer_id: s.customerId, price: s.price, currency: s.cur, starts_at: s.start, months: s.months, pay_status: s.pay, pay_note: s.payNote, sales_rep_id: s.salesId, sales_pct: s.salesId ? s.salesPct : null, commission_paid: s.commissionPaid };
+    const row = { customer_id: s.customerId, price: s.price, currency: s.cur, starts_at: s.start, months: s.months, duration_unit: s.unit, pay_status: s.pay, pay_note: s.payNote, sales_rep_id: s.salesId, sales_pct: s.salesId ? s.salesPct : null, commission_paid: s.commissionPaid };
     ok(s.id ? await supabase.from('subscriptions').update(row).eq('id', s.id) : await supabase.from('subscriptions').insert(row));
   },
   async deleteSub(customerId: string, id: string) {
