@@ -468,3 +468,13 @@ select.input { background-position: left 12px center; }
 /* Nexora: فورم بعمودين في النوافذ (عمود واحد على الموبايل) */
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* عداد الاشتراك */
+.cd{display:inline-flex;gap:4px;margin-top:4px;direction:rtl;font-variant-numeric:tabular-nums}
+.cd span{display:flex;flex-direction:column;align-items:center;min-width:30px;padding:2px 4px;border-radius:6px;font-size:10px;line-height:1.2}
+.cd b{font-size:13px;font-weight:700}
+.cd-ok span{background:#e7f6ee;color:#16794a}
+.cd-warn span{background:#fff4e0;color:#a35d00}
+.cd-danger span{background:#fdeaea;color:#b42318}
+.cd-over{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:6px;background:#fdeaea;color:#b42318;font-size:12px;font-weight:700}
+.install-btn{position:fixed;bottom:16px;left:16px;z-index:200;display:flex;align-items:center;gap:8px;padding:10px 16px;border:0;border-radius:12px;background:#223468;color:#fff;font:inherit;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer}

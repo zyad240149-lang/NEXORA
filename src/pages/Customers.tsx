@@ -1,13 +1,14 @@
+import { Countdown } from '../components/Countdown';
 import { useState } from 'react';
 import { Button, EmptyState, ErrorState, Input, Skeleton, StatusBadge } from '../components/ui';
 import CustomerModal from '../components/CustomerModal';
-import SubModal from '../components/SubModal';
+import SubsHistory from '../components/SubsHistory';
 import { currentSub, db } from '../data/db';
 import { subState } from '../data/status';
 import { useCustomers } from '../hooks/useCustomers';
 import { useToast } from '../hooks/useToast';
 import type { Customer } from '../types';
-import { fmtDate, money } from '../utils/format';
+import { fmtDate, fmtDuration, money } from '../utils/format';
 import { useAuth } from '../services/auth';
 
 export default function Customers() {
@@ -46,11 +47,11 @@ export default function Customers() {
                     <td>{c.branches.length ? <><span className="num">{c.branches.length}</span><div className="muted-sm">{c.branches.join('، ')}</div></> : '—'}</td>
                     <td>{c.managerName && <div>{c.managerName} <span className="muted-sm">مدير</span></div>}{c.contractManagerName && <div>{c.contractManagerName} <span className="muted-sm">مدير تعاقد</span></div>}{!c.managerName && !c.contractManagerName && '—'}</td>
                     <td className="num" dir="ltr" style={{ textAlign: 'end' }}>{c.code} {c.phone}</td>
-                    <td className="num">{s ? `${money(s.price, s.cur)} / ${s.months} شهر` : '—'}</td>
-                    <td>{s ? fmtDate(s.end) : '—'}</td>
+                    <td className="num">{s ? `${money(s.price, s.cur)} / ${fmtDuration(s.months, s.unit)}` : '—'}</td>
+                    <td>{s ? <>{fmtDate(s.end)}<Countdown end={s.end} /></> : "—"}</td>
                     <td><StatusBadge {...subState(s)} /></td>
                     <td className="actions"><div style={{ display: 'flex', gap: 6 }}>
-                      {admin && <Button size="sm" variant="outline" icon="plus" onClick={() => setSubFor(c)}>اشتراك</Button>}
+                      {admin && <Button size="sm" variant="outline" icon="receipt" onClick={() => setSubFor(c)}>الاشتراكات <span className="num">({c.subs.length})</span></Button>}
                       <Button size="sm" variant="ghost" icon="edit" onClick={() => setEdit(c)} aria-label="تعديل" />
                       {admin && <Button size="sm" variant="ghost" icon="trash" onClick={() => del(c)} aria-label="حذف" />}
                     </div></td>
@@ -62,7 +63,7 @@ export default function Customers() {
         </div>
       </div>
       {edit && <CustomerModal customer={edit === 'new' ? undefined : edit} onClose={() => setEdit(null)} onSaved={() => { setEdit(null); reload(); }} />}
-      {subFor && <SubModal customer={subFor} onClose={() => setSubFor(null)} onSaved={() => { setSubFor(null); reload(); }} />}
+      {subFor && <SubsHistory customer={(rows ?? []).find((x) => x.id === subFor.id) ?? subFor} onClose={() => setSubFor(null)} onChanged={reload} />}
     </div>
   );
 }
