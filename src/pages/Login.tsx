@@ -32,7 +32,7 @@ export default function Login() {
           <h1>تسجيل الدخول</h1>
           <p className="lead">ادخل بحسابك عشان تكمل.</p>
           <div style={{ display: 'grid', gap: 14 }}>
-            <Input label="الإيميل" type="email" dir="ltr" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input label="رقم الموبايل أو الإيميل" type="text" dir="ltr" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
             <PasswordInput label="كلمة المرور" autoComplete="current-password" value={pw} onChange={(e) => setPw(e.target.value)} />
             {err && <div className="alert alert-danger">{err}</div>}
             <Button type="submit" block loading={busy}>دخول</Button>

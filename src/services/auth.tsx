@@ -29,8 +29,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => sub.subscription.unsubscribe();
   }, []);
   const login = async (email: string, password: string) => {
-    const { data, error } = await supabase!.auth.signInWithPassword({ email: email.trim(), password });
-    if (error) throw new Error(error.message === 'Invalid login credentials' ? 'الإيميل أو كلمة المرور غلط' : error.message);
+    const { data, error } = await supabase!.auth.signInWithPassword({ email: email.includes('@') ? email.trim() : email.replace(/\D/g, '') + '@nexora.local', password });
+    if (error) throw new Error(error.message === 'Invalid login credentials' ? 'البيانات أو كلمة المرور غلط' : error.message);
     const u = await loadProfile(data.user.id, data.user.email ?? '');
     if (!u) { await supabase!.auth.signOut(); throw new Error('الحساب ده مالوش صلاحية دخول للسيستم'); }
     setUser(u);
