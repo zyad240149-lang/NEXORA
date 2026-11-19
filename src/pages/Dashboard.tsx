@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StatCard } from '../components/StatCard';
+import { GrowthCard } from '../components/GrowthCard';
 import { EmptyState, ErrorState, Skeleton, StatusBadge } from '../components/ui';
 import { currentSub, db } from '../data/db';
 import { subState } from '../data/status';
@@ -32,6 +33,7 @@ export default function Dashboard() {
           <StatCard icon="clock" tone="warn" value={soon.length} label="تنتهي قريبًا / منتهية" />
           <StatCard icon="wallet" tone="info" value={money(revenue.EGP ?? 0, 'EGP')} label="إجمالي المحصّل" sub={revenue.SAR ? <span className="num">+ {money(revenue.SAR, 'SAR')}</span> : undefined} />
         </div>
+        <GrowthCard rows={rows} />
         {goal && (
           <div className="card" style={{ marginTop: 16 }}>
             <div className="card__head"><h3>{goal.name}</h3><span className="num muted">{rows.length} / {goal.target}</span></div>

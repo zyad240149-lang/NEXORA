@@ -478,3 +478,18 @@ select.input { background-position: left 12px center; }
 .cd-danger span{background:#fdeaea;color:#b42318}
 .cd-over{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:6px;background:#fdeaea;color:#b42318;font-size:12px;font-weight:700}
 .install-btn{position:fixed;bottom:16px;left:16px;z-index:200;display:flex;align-items:center;gap:8px;padding:10px 16px;border:0;border-radius:12px;background:#223468;color:#fff;font:inherit;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer}
+
+/* نمو العملاء */
+.growth-arrow{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;font-weight:700;font-size:14px}
+.growth-arrow .g-ico{font-size:12px}
+.g-up{background:#e7f6ee;color:#16794a}.g-down{background:#fdeaea;color:#b42318}.g-flat{background:var(--surface-2);color:var(--text-muted,#667)}
+.growth-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.growth-sum div{background:var(--surface-2);border-radius:12px;padding:12px}
+.growth-sum b{display:block;font-size:24px}.growth-sum span{font-size:13px;opacity:.75}
+.growth-chart{display:flex;align-items:flex-end;gap:6px;height:180px;padding-top:20px}
+.g-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;cursor:pointer;min-width:0}
+.g-bar{width:100%;max-width:38px;min-height:3px;border-radius:6px 6px 2px 2px;background:var(--brand);opacity:.45;transition:.2s}
+.g-now .g-bar,.g-hov .g-bar{opacity:1}
+.g-val{font-size:12px;font-weight:700;margin-bottom:4px}
+.g-lbl{font-size:11px;margin-top:6px;opacity:.7;white-space:nowrap}
+@media(max-width:600px){.growth-sum b{font-size:19px}.g-lbl{font-size:9px}.growth-chart{gap:3px}}
