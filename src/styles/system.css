@@ -479,19 +479,30 @@ select.input { background-position: left 12px center; }
 .cd-over{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:6px;background:#fdeaea;color:#b42318;font-size:12px;font-weight:700}
 .install-btn{position:fixed;bottom:16px;left:16px;z-index:200;display:flex;align-items:center;gap:8px;padding:10px 16px;border:0;border-radius:12px;background:#223468;color:#fff;font:inherit;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer}
 
-/* نمو العملاء */
-.growth-arrow{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;font-weight:700;font-size:14px}
-.growth-arrow .g-ico{font-size:12px}
-.g-up{background:#e7f6ee;color:#16794a}.g-down{background:#fdeaea;color:#b42318}.g-flat{background:var(--surface-2);color:var(--text-muted,#667)}
-.growth-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-.growth-sum div{background:var(--surface-2);border-radius:12px;padding:12px}
-.growth-sum b{display:block;font-size:24px}.growth-sum span{font-size:13px;opacity:.75}
-.growth-chart{display:flex;align-items:flex-end;gap:6px;height:180px;padding-top:20px}
-.g-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;cursor:pointer;min-width:0}
-.g-bar{width:100%;max-width:38px;min-height:3px;border-radius:6px 6px 2px 2px;background:var(--brand);opacity:.45;transition:.2s}
-.g-now .g-bar,.g-hov .g-bar{opacity:1}
-.g-val{font-size:12px;font-weight:700;margin-bottom:4px}
-.g-lbl{font-size:11px;margin-top:6px;opacity:.7;white-space:nowrap}
-@media(max-width:600px){.growth-sum b{font-size:19px}.g-lbl{font-size:9px}.growth-chart{gap:3px}}
 .back-site{position:absolute;top:24px;inset-inline-start:24px;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border,#dde2ee);border-radius:10px;background:#fff;color:inherit;font-weight:600;font-size:14px;text-decoration:none}
 .back-site:hover{background:var(--surface-2)}
+
+/* نمو العملاء */
+.growth .card__head{align-items:center}
+.growth-arrow{display:flex;align-items:center;gap:10px;padding:8px 16px;border-radius:14px}
+.growth-arrow .g-ico{font-size:22px;line-height:1}
+.growth-arrow b{display:block;font-size:22px;line-height:1.1}.growth-arrow small{font-size:11px;opacity:.8}
+.g-up{background:#e7f6ee;color:#16794a}.g-down{background:#fdeaea;color:#b42318}.g-flat{background:var(--surface-2);color:#667}
+.growth-sum{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.growth-sum>div{background:var(--surface-2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.growth-sum span{font-size:13px;opacity:.75}.growth-sum b{font-size:30px;font-weight:700;line-height:1.2}
+.growth-sum em{font-style:normal;font-size:12px;font-weight:600;opacity:.9}.growth-sum em.up{color:#16794a}.growth-sum em.down{color:#b42318}
+.growth-sum .gs-main{background:var(--brand);color:#fff}.growth-sum .gs-main span,.growth-sum .gs-main em{color:#fff!important;opacity:.85}
+.g-legend{display:flex;gap:18px;font-size:13px;margin-bottom:4px;opacity:.85}
+.g-legend span{display:flex;align-items:center;gap:6px}
+.lg-bar{width:12px;height:12px;border-radius:3px;background:var(--brand)}.lg-line{width:18px;height:3px;border-radius:2px;background:#10b981}
+.g-svg{width:100%;height:auto;display:block;overflow:visible;direction:ltr}
+.g-grid{stroke:#e6e9f2;stroke-width:1}
+.g-axis{font-size:12px;fill:#98a0b3;font-family:inherit}
+.g-bar{fill:var(--brand);opacity:.35}.g-bar-now{fill:var(--brand)}
+.g-num{font-size:15px;font-weight:700;fill:var(--brand);font-family:inherit}
+.g-month{font-size:13px;fill:#7a8299;font-family:inherit}.g-month.now{fill:var(--brand);font-weight:700}
+.g-line{fill:none;stroke:#10b981;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.g-dot{fill:#fff;stroke:#10b981;stroke-width:3}
+.g-detail{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:6px;padding:10px 14px;border-radius:12px;background:var(--surface-2);font-size:14px}
+@media(max-width:700px){.growth-sum{grid-template-columns:1fr 1fr}.growth-sum .gs-main{grid-column:1/-1}.growth-sum b{font-size:24px}}
